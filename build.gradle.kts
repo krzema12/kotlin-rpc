@@ -83,7 +83,7 @@ application {
     mainClassName = "ServerKt"
 }
 tasks.getByName<KotlinWebpack>("jsBrowserProductionWebpack") {
-    outputFileName = "output.js"
+    outputFileName = "zoo.js"
 }
 tasks.getByName<Jar>("jvmJar") {
     dependsOn(tasks.getByName("jsBrowserProductionWebpack"))
