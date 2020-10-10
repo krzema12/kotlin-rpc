@@ -1,3 +1,4 @@
+import it.krzeminski.zoo.api.TestDataClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -32,9 +33,18 @@ class Welcome(props: WelcomeProps) : RComponent<WelcomeProps, WelcomeState>(prop
     override fun componentDidMount() {
         with (ZooClient(coroutineContext)) {
             launch {
-                val zoosFromBackendFetched = getZoos()
+                val zoosFromBackendFetched = someFunction(
+                    intArg = 123,
+                    dataClassArg = TestDataClass(
+                        stringField = "FooBar!",
+                        optionalIntField = 987,
+                    ),
+                    listArg = listOf(true, false, true, false),
+                )
                 setState {
-                    zoosFromBackend = zoosFromBackendFetched
+                    zoosFromBackend = zoosFromBackendFetched.joinToString {
+                        it.toString()
+                    }
                 }
             }
         }

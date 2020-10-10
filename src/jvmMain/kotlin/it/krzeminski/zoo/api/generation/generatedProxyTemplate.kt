@@ -4,7 +4,7 @@ import it.krzeminski.zoo.api.TestDataClass
 import it.krzeminski.zoo.api.ZooApi
 
 class FooBarImplementation(private val url: String) : ZooApi {
-    override fun someFunction(intArg: Int, dataClassArg: TestDataClass, listArg: List<Boolean>): List<Float> {
+    override suspend fun someFunction(intArg: Int, dataClassArg: TestDataClass, listArg: List<Boolean>): List<Float> {
         // TODO create a data object with all arguments
         // TODO serialize using kotlinx.serialization
         // TODO make the call using FETCH
@@ -14,7 +14,7 @@ class FooBarImplementation(private val url: String) : ZooApi {
         TODO()
     }
 
-    override fun otherFunction(): String {
+    override suspend fun otherFunction(): String {
         TODO("Not yet implemented")
     }
 }
