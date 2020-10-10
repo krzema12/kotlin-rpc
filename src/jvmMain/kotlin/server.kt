@@ -17,7 +17,7 @@ fun main() {
             get("/zoos") { webApp() }
             route("/api") {
                 get("/zoos") {
-                    call.respond("Some zoos")
+                    call.respond("Some zoos from API")
                 }
             }
             static("/static") {

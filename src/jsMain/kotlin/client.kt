@@ -13,15 +13,14 @@ fun main() {
                     route("/", exact = true) {
                         child(Welcome::class) {
                             attrs {
-                                name = "Root page"
+                                initName = "Root page"
                             }
                         }
                     }
                     route("/zoos") {
-                        // TODO fetch zoos from API
                         child(Welcome::class) {
                             attrs {
-                                name = "Zoos"
+                                initName = "Zoos"
                             }
                         }
                     }
