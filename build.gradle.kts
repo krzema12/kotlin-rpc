@@ -101,3 +101,12 @@ tasks.getByName<JavaExec>("run") {
     dependsOn(tasks.getByName<Jar>("jvmJar"))
     classpath(tasks.getByName<Jar>("jvmJar"))
 }
+
+val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsProxy") {
+    group = "build"
+    description = "Generate ZooApi JS proxy"
+    classpath = sourceSets["main"].runtimeClasspath
+    main = "it.krzeminski.zoo.api.generation.GenerateProxyKt"
+//    args("src/**/*.kt", "-v")
+    // TODO write to generated sources, not stdout
+}
