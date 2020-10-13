@@ -16,7 +16,7 @@ class ZooClient(private val coroutineContext: CoroutineContext) : ZooApi {
         const val serverBase = "http://localhost:8080"
     }
 
-    override suspend fun someFunction(intArg: Int, dataClassArg: TestDataClass, listArg: List<Boolean>): List<Float> {
+    override suspend fun someFunction(intArg: Int, dataClassArg: TestDataClass, listArg: List<Boolean?>): List<Float> {
         val body = SomeFunctionRequest(intArg, dataClassArg, listArg)
         val bodyAsString = Json.encodeToString(body)
         val responseAsString = post("$serverBase/api/someFunction", bodyAsString)

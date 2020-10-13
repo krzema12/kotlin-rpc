@@ -12,7 +12,7 @@ interface ZooApi {
     suspend fun someFunction(
             intArg: Int,
             dataClassArg: TestDataClass,
-            listArg: List<Boolean>,
+            listArg: List<Boolean?>,
     ): List<Float>
 
     suspend fun otherFunction(

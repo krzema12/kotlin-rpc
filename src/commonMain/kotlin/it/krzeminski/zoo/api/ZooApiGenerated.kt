@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class SomeFunctionRequest(
     val intArg: Int,
     val dataClassArg: TestDataClass,
-    val listArg: List<Boolean>,
+    val listArg: List<Boolean?>,
 )
