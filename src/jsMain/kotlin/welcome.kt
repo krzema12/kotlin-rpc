@@ -1,5 +1,4 @@
 import it.krzeminski.zoo.api.TestDataClass
-import it.krzeminski.zoo.api.ZooApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ class Welcome(props: WelcomeProps) : RComponent<WelcomeProps, WelcomeState>(prop
     }
 
     override fun componentDidMount() {
-        with(ZooApiJsProxy(ZooApi.defaultUrl, coroutineContext)) {
+        with(ZooApiJsProxy(url = "http://localhost:8080", coroutineContext)) {
             launch {
                 val zoosFromBackendFetched = someFunction(
                     intArg = 123,
