@@ -19,8 +19,7 @@ fun main(args: Array<String>) {
 }
 
 private fun generateClass(klass: KClass<*>): String {
-    return """
-        import kotlinx.serialization.Serializable
+    return """import kotlinx.serialization.Serializable
 import kotlinx.browser.window
 import kotlinx.coroutines.await
 import kotlinx.coroutines.withContext
