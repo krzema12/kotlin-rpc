@@ -1,12 +1,21 @@
 package it.krzeminski.zoo.api.generation
 
-import it.krzeminski.zoo.api.ZooApi
+import java.io.File
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
 
-fun main() {
-    println(generateClass(ZooApi::class))
+fun main(args: Array<String>) {
+    val className = args[0]
+    val targetPath = args[1]
+
+    println("Class name: $className")
+    println("Target path: $targetPath")
+
+    val classToGenerateClientFor = Class.forName(className).kotlin
+    val generatedCode = generateClass(classToGenerateClientFor)
+    File(targetPath).mkdirs()
+    File("$targetPath/${classToGenerateClientFor.simpleName}JsProxy.kt").writeText(generatedCode)
 }
 
 private fun generateClass(klass: KClass<*>): String {

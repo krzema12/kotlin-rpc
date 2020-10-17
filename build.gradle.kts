@@ -78,6 +78,7 @@ kotlin {
                 implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.110-kotlin-1.4.10")
                 implementation("org.jetbrains:kotlin-styled:1.0.0-pre.110-kotlin-1.4.10")
             }
+            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/js/generated/")
         }
         val jsTest by getting {
             dependencies {
@@ -107,6 +108,7 @@ val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsProxy") {
     description = "Generate ZooApi JS proxy"
     classpath = sourceSets["main"].runtimeClasspath
     main = "it.krzeminski.zoo.api.generation.GenerateProxyKt"
-//    args("src/**/*.kt", "-v")
-    // TODO write to generated sources, not stdout
+    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/js/generated")
 }
+
+tasks.getByName("compileKotlinJs").dependsOn(generateZooApiJsProxy)
