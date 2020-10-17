@@ -9,6 +9,10 @@ data class TestDataClass(
 )
 
 interface ZooApi {
+    companion object {
+        const val defaultUrl = "http://localhost:8080"
+    }
+
     suspend fun someFunction(
         intArg: Int,
         dataClassArg: TestDataClass,

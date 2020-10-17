@@ -29,7 +29,7 @@ import org.w3c.fetch.RequestInit
 import kotlin.coroutines.CoroutineContext
 import kotlin.js.json
         
-        class ${klass.simpleName}JsProxy(private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
+        class ${klass.simpleName}JsProxy(private val url: String, private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
             ${klass.declaredMemberFunctions.joinToString("\n") { function -> generateProxyFunction(function) }}
             
             ${generatePostMethod()}
@@ -45,7 +45,7 @@ private fun generateProxyFunction(function: KFunction<*>): String {
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name}: ${parameter.type}," }}
         ): ${function.returnType} {
             ${generateRequestBody(function)}
-            val responseBodyAsString = post("http://localhost:8080/api/${function.name}", requestBodyAsString)
+            val responseBodyAsString = post("${'$'}url/api/${function.name}", requestBodyAsString)
             val responseBody = Json.decodeFromString<${function.returnType}>(responseBodyAsString)
             return responseBody
         }"""
