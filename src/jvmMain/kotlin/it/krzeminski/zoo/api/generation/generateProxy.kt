@@ -30,7 +30,7 @@ import org.w3c.fetch.RequestInit
 import kotlin.coroutines.CoroutineContext
 import kotlin.js.json
         
-        class ${klass.simpleName}Proxy(private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
+        class ${klass.simpleName}JsProxy(private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
             ${klass.declaredMemberFunctions.joinToString("\n") { function -> generateProxyFunction(function) }}
             
             ${generatePostMethod()}
@@ -42,7 +42,7 @@ private fun generateProxyFunction(function: KFunction<*>): String {
     return """
         ${if (function.parameters.drop(1).isNotEmpty()) generateRequestDataClass(function) else ""}
         
-        override ${if(function.isSuspend) "suspend" else ""} fun ${function.name}(
+        override ${if (function.isSuspend) "suspend" else ""} fun ${function.name}(
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name}: ${parameter.type}," }}
         ): ${function.returnType} {
             ${generateRequestBody(function)}

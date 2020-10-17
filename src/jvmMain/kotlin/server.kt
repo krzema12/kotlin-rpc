@@ -1,18 +1,27 @@
-import io.ktor.application.*
+import io.ktor.application.ApplicationCall
+import io.ktor.application.call
 import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
-import io.ktor.util.pipeline.*
+import io.ktor.request.receiveText
+import io.ktor.response.respond
+import io.ktor.routing.get
+import io.ktor.routing.post
+import io.ktor.routing.route
+import io.ktor.routing.routing
+import io.ktor.server.engine.embeddedServer
+import io.ktor.server.netty.Netty
+import io.ktor.util.pipeline.PipelineContext
 import it.krzeminski.zoo.api.SomeFunctionRequest
 import it.krzeminski.zoo.api.TestDataClass
 import it.krzeminski.zoo.api.ZooApi
-import kotlinx.html.*
+import kotlinx.html.body
+import kotlinx.html.div
+import kotlinx.html.head
+import kotlinx.html.id
+import kotlinx.html.script
+import kotlinx.html.title
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -30,7 +39,6 @@ fun main() {
         override suspend fun otherFunction(): String {
             TODO("Not yet implemented")
         }
-
     }
 
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {

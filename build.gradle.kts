@@ -3,10 +3,22 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 plugins {
     kotlin("multiplatform") version "1.4.10"
     kotlin("plugin.serialization") version "1.4.10"
+    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     application
 }
 group = "it.krzeminski"
 version = "1.0-SNAPSHOT"
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    val ktlint by configurations.creating
+    dependencies {
+        ktlint("com.pinterest:ktlint:0.39.0")
+    }
+}
 
 repositories {
     mavenCentral()
@@ -112,3 +124,4 @@ val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsProxy") {
 }
 
 tasks.getByName("compileKotlinJs").dependsOn(generateZooApiJsProxy)
+tasks.getByName("ktlintJsMainSourceSetCheck").dependsOn(tasks.getByName("ktlintJsMainSourceSetFormat"))

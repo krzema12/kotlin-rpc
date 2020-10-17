@@ -1,4 +1,10 @@
-import kotlinx.css.*
+import kotlinx.css.backgroundColor
+import kotlinx.css.color
+import kotlinx.css.fontSize
+import kotlinx.css.margin
+import kotlinx.css.padding
+import kotlinx.css.px
+import kotlinx.css.rgb
 import styled.StyleSheet
 
 object WelcomeStyles : StyleSheet("WelcomeStyles", isStatic = true) {
@@ -14,4 +20,4 @@ object WelcomeStyles : StyleSheet("WelcomeStyles", isStatic = true) {
 
         fontSize = 14.px
     }
-} 
+}

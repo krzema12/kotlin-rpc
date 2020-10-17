@@ -31,7 +31,7 @@ class Welcome(props: WelcomeProps) : RComponent<WelcomeProps, WelcomeState>(prop
     }
 
     override fun componentDidMount() {
-        with (ZooApiProxy(coroutineContext)) {
+        with(ZooApiJsProxy(coroutineContext)) {
             launch {
                 val zoosFromBackendFetched = someFunction(
                     intArg = 123,

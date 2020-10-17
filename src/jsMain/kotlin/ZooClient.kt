@@ -30,10 +30,17 @@ class ZooClient(private val coroutineContext: CoroutineContext) : ZooApi {
 
     private suspend fun post(url: String, body: String): String {
         return withContext(coroutineContext) {
-            val response = window.fetch(url, RequestInit("POST", headers = json(
-                    "Accept" to "application/json",
-                    "Content-Type" to "application/json"),
-                    body = body)).await()
+            val response = window.fetch(
+                url,
+                RequestInit(
+                    "POST",
+                    headers = json(
+                        "Accept" to "application/json",
+                        "Content-Type" to "application/json"
+                    ),
+                    body = body
+                )
+            ).await()
 
             response.text().await()
         }
