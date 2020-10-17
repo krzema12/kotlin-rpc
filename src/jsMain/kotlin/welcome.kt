@@ -24,7 +24,6 @@ external interface WelcomeState : RState {
     var zoosFromBackend: String?
 }
 
-@JsExport
 class Welcome(props: WelcomeProps) : RComponent<WelcomeProps, WelcomeState>(props), CoroutineScope by MainScope() {
 
     override fun WelcomeState.init(props: WelcomeProps) {
