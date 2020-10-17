@@ -13,7 +13,6 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import io.ktor.util.pipeline.PipelineContext
-import it.krzeminski.zoo.api.SomeFunctionRequest
 import it.krzeminski.zoo.api.TestDataClass
 import it.krzeminski.zoo.api.ZooApi
 import kotlinx.html.body
@@ -22,6 +21,7 @@ import kotlinx.html.head
 import kotlinx.html.id
 import kotlinx.html.script
 import kotlinx.html.title
+import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -40,6 +40,13 @@ fun main() {
             TODO("Not yet implemented")
         }
     }
+
+    @Serializable
+    data class SomeFunctionRequest(
+        val intArg: Int,
+        val dataClassArg: TestDataClass,
+        val listArg: List<Boolean?>,
+    )
 
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
         routing {
