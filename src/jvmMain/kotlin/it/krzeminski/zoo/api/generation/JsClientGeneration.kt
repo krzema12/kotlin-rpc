@@ -15,7 +15,7 @@ fun main(args: Array<String>) {
     val classToGenerateClientFor = Class.forName(className).kotlin
     val generatedCode = generateClass(classToGenerateClientFor)
     File(targetPath).mkdirs()
-    File("$targetPath/${classToGenerateClientFor.simpleName}JsProxy.kt").writeText(generatedCode)
+    File("$targetPath/${classToGenerateClientFor.simpleName}JsClient.kt").writeText(generatedCode)
 }
 
 private fun generateClass(klass: KClass<*>): String {
@@ -29,7 +29,7 @@ import org.w3c.fetch.RequestInit
 import kotlin.coroutines.CoroutineContext
 import kotlin.js.json
         
-        class ${klass.simpleName}JsProxy(private val url: String, private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
+        class ${klass.simpleName}JsClient(private val url: String, private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
             ${klass.declaredMemberFunctions.joinToString("\n") { function -> generateProxyFunction(function) }}
             
             ${generatePostMethod()}

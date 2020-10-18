@@ -115,11 +115,11 @@ tasks.getByName<JavaExec>("run") {
     classpath(tasks.getByName<Jar>("jvmJar"))
 }
 
-val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsProxy") {
+val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsClient") {
     group = "build"
     description = "Generate ZooApi JS proxy"
     classpath = sourceSets["main"].runtimeClasspath
-    main = "it.krzeminski.zoo.api.generation.GenerateProxyKt"
+    main = "it.krzeminski.zoo.api.generation.JsClientGenerationKt"
     args("it.krzeminski.zoo.api.ZooApi", "$buildDir/js/generated")
 }
 
