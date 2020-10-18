@@ -4,11 +4,7 @@ import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
-import io.ktor.request.receiveText
-import io.ktor.response.respond
 import io.ktor.routing.get
-import io.ktor.routing.post
-import io.ktor.routing.route
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -21,10 +17,6 @@ import kotlinx.html.head
 import kotlinx.html.id
 import kotlinx.html.script
 import kotlinx.html.title
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 fun main() {
     val zooImpl = object : ZooApi {
@@ -41,36 +33,11 @@ fun main() {
         }
     }
 
-    @Serializable
-    data class SomeFunctionRequest(
-        val intArg: Int,
-        val dataClassArg: TestDataClass,
-        val listArg: List<Boolean?>,
-    )
-
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
         routing {
             get("/") { webApp() }
             get("/zoos") { webApp() }
-            route("/api") {
-                get("/zoos") {
-                    call.respond("Some zoos from API")
-                }
-                post("/someFunction") {
-                    val bodyAsStrong = call.receiveText()
-                    println("Body for /someFunction: $bodyAsStrong")
-                    val body = Json.decodeFromString<SomeFunctionRequest>(bodyAsStrong)
-                    println("Deserialized body: $body")
-
-                    val implResponse = zooImpl.someFunction(
-                        intArg = body.intArg,
-                        dataClassArg = body.dataClassArg,
-                        listArg = body.listArg,
-                    )
-
-                    call.respond(Json.encodeToString(implResponse))
-                }
-            }
+            zooApiKtorHandlers(zooImpl)
             static("/static") {
                 resources()
             }
