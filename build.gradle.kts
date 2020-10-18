@@ -76,6 +76,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
                 implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
             }
+            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }
         val jvmTest by getting {
             dependencies {
@@ -125,3 +126,18 @@ val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsClient") {
 
 tasks.getByName("compileKotlinJs").dependsOn(generateZooApiJsProxy)
 tasks.getByName("ktlintJsMainSourceSetCheck").dependsOn(tasks.getByName("ktlintJsMainSourceSetFormat"))
+
+val generateZooApiJvmKtorServer = tasks.register<JavaExec>("generateZooApiJvmKtorServer") {
+    group = "build"
+    description = "Generate ZooApi JVM Ktor server"
+    classpath = sourceSets["main"].runtimeClasspath
+    main = "it.krzeminski.zoo.api.generation.JvmKtorServerGenerationKt"
+    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/jvm/generated")
+}
+
+// The below dependency doesn't work well. In order to make it work, one has to comment out the use of the below
+// generated server, run 'gradle build', then uncomment it and then 'gradle build' again. When the generation logic is
+// moved to a separate module, things should work more logically and it should be possible to define more robust
+// dependencies between Gradle tasks.
+tasks.getByName("assemble").dependsOn(generateZooApiJvmKtorServer)
+tasks.getByName("ktlintJvmMainSourceSetCheck").dependsOn(tasks.getByName("ktlintJvmMainSourceSetFormat"))
