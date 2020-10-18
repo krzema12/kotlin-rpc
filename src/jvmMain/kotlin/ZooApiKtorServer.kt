@@ -14,14 +14,9 @@ import kotlinx.serialization.json.Json
 
 fun Routing.zooApiKtorHandlers(zooApiImpl: ZooApi) {
     route("/api") {
-        get("/zoos") {
-            call.respond("Some zoos from API")
-        }
         post("/someFunction") {
             val bodyAsStrong = call.receiveText()
-            println("Body for /someFunction: $bodyAsStrong")
             val body = Json.decodeFromString<SomeFunctionRequest>(bodyAsStrong)
-            println("Deserialized body: $body")
 
             val implResponse = zooApiImpl.someFunction(
                 intArg = body.intArg,
