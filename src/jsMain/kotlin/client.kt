@@ -11,18 +11,7 @@ fun main() {
             browserRouter {
                 switch {
                     route("/", exact = true) {
-                        child(Welcome::class) {
-                            attrs {
-                                initName = "Root page"
-                            }
-                        }
-                    }
-                    route("/zoos") {
-                        child(Welcome::class) {
-                            attrs {
-                                initName = "Zoos"
-                            }
-                        }
+                        child(Welcome::class) {}
                     }
                 }
             }
