@@ -36,12 +36,16 @@ kotlin {
         }
         val jvmMain by getting {
             dependencies {
+                implementation("io.ktor:ktor-server-netty:1.4.0")
                 implementation(project(":codegen"))
             }
+            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }
         val jsMain by getting {
             dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.9")
             }
+            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/js/generated/")
         }
     }
 }
@@ -51,7 +55,7 @@ val generateZooApiJsProxy = tasks.register<JavaExec>("generateZooApiJsClient") {
     description = "Generate ZooApi JS proxy"
     classpath = sourceSets["main"].runtimeClasspath
     main = "it.krzeminski.zoo.api.generation.JsClientGenerationKt"
-    args("it.krzeminski.zoo.api.ZooApi", "${parent?.buildDir}/js/generated")
+    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/js/generated")
 }
 
 val generateZooApiJvmKtorServer = tasks.register<JavaExec>("generateZooApiJvmKtorServer") {
@@ -59,7 +63,7 @@ val generateZooApiJvmKtorServer = tasks.register<JavaExec>("generateZooApiJvmKto
     description = "Generate ZooApi JVM Ktor server"
     classpath = sourceSets["main"].runtimeClasspath
     main = "it.krzeminski.zoo.api.generation.JvmKtorServerGenerationKt"
-    args("it.krzeminski.zoo.api.ZooApi", "${parent?.buildDir}/jvm/generated")
+    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/jvm/generated")
 }
 
 tasks.getByName("jvmJar").dependsOn(generateZooApiJvmKtorServer)

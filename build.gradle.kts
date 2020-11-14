@@ -3,7 +3,6 @@ import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack
 plugins {
     kotlin("multiplatform") version "1.4.10"
     kotlin("plugin.serialization") version "1.4.10"
-    id("org.jlleitschuh.gradle.ktlint") version "9.4.1"
     application
 }
 group = "it.krzeminski"
@@ -75,8 +74,8 @@ kotlin {
                 implementation("io.ktor:ktor-server-netty:1.4.0")
                 implementation("io.ktor:ktor-html-builder:1.4.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.7.2")
+                implementation(project("api"))
             }
-            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }
         val jvmTest by getting {
             dependencies {
@@ -90,8 +89,8 @@ kotlin {
                 implementation("org.jetbrains:kotlin-react-dom:16.13.1-pre.110-kotlin-1.4.10")
                 implementation("org.jetbrains:kotlin-react-router-dom:5.1.2-pre.110-kotlin-1.4.10")
                 implementation("org.jetbrains:kotlin-styled:1.0.0-pre.110-kotlin-1.4.10")
+                implementation(project("api"))
             }
-            kotlin.srcDirs(kotlin.srcDirs, "$buildDir/js/generated/")
         }
         val jsTest by getting {
             dependencies {
@@ -115,6 +114,3 @@ tasks.getByName<JavaExec>("run") {
     dependsOn(tasks.getByName<Jar>("jvmJar"))
     classpath(tasks.getByName<Jar>("jvmJar"))
 }
-
-tasks.getByName("ktlintJsMainSourceSetCheck").dependsOn(tasks.getByName("ktlintJsMainSourceSetFormat"))
-tasks.getByName("ktlintJvmMainSourceSetCheck").dependsOn(tasks.getByName("ktlintJvmMainSourceSetFormat"))
