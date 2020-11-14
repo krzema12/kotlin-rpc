@@ -1,4 +1,1 @@
-
-rootProject.name = "zoo"
-include("codegen")
-include("api")
+rootProject.name = "kotlin-rpc"
