@@ -1,4 +1,4 @@
-package it.krzeminski.zoo.api.generation
+package it.krzeminski.kotlinrpc.api.generation
 
 import java.io.File
 import kotlin.reflect.KClass
