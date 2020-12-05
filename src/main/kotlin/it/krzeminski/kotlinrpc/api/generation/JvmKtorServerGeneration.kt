@@ -25,8 +25,6 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
 import io.ktor.routing.route
-import it.krzeminski.zoo.api.TestDataClass
-import it.krzeminski.zoo.api.ZooApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
