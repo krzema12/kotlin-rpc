@@ -8,17 +8,22 @@ import kotlin.reflect.full.declaredMemberFunctions
 fun main(args: Array<String>) {
     val className = args[0]
     val targetPath = args[1]
+    val annotations = if (args.size >= 3 ) {
+        args[2].split(",")
+    } else {
+        emptyList()
+    }
 
     println("Class name: $className")
     println("Target path: $targetPath")
 
     val classToGenerateClientFor = Class.forName(className).kotlin
-    val generatedCode = generateClass(classToGenerateClientFor)
+    val generatedCode = generateClass(classToGenerateClientFor, annotations)
     File(targetPath).mkdirs()
     File("$targetPath/${classToGenerateClientFor.simpleName}JsClient.kt").writeText(generatedCode)
 }
 
-private fun generateClass(klass: KClass<*>): String {
+private fun generateClass(klass: KClass<*>, annotations: List<String>): String {
     return """import kotlinx.serialization.Serializable
 import kotlinx.browser.window
 import kotlinx.coroutines.await
@@ -29,6 +34,7 @@ import org.w3c.fetch.RequestInit
 import kotlin.coroutines.CoroutineContext
 import kotlin.js.json
         
+       ${annotations.joinToString("\n")}
         class ${klass.simpleName}JsClient(private val url: String, private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
             ${klass.declaredMemberFunctions.joinToString("\n") { function -> generateProxyFunction(function) }}
             

@@ -8,17 +8,22 @@ import kotlin.reflect.full.declaredMemberFunctions
 fun main(args: Array<String>) {
     val className = args[0]
     val targetPath = args[1]
+    val annotations = if (args.size >= 3 ) {
+        args[2].split(",")
+    } else {
+        emptyList()
+    }
 
     println("Class name: $className")
     println("Target path: $targetPath")
 
     val classToGenerateClientFor = Class.forName(className).kotlin
-    val generatedCode = generateServerCode(classToGenerateClientFor)
+    val generatedCode = generateServerCode(classToGenerateClientFor, annotations)
     File(targetPath).mkdirs()
     File("$targetPath/${classToGenerateClientFor.simpleName}JvmKtorServer.kt").writeText(generatedCode)
 }
 
-private fun generateServerCode(klass: KClass<*>): String {
+private fun generateServerCode(klass: KClass<*>, annotations: List<String>): String {
     return """import io.ktor.application.call
 import io.ktor.request.receiveText
 import io.ktor.response.respond
@@ -29,7 +34,8 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-        
+      
+       ${annotations.joinToString("\n")}
         fun Routing.${klass.simpleName?.decapitalize()}KtorHandlers(${klass.simpleName?.decapitalize()}Impl: ${klass.qualifiedName}) {
             route("api/") {
                 ${klass.declaredMemberFunctions.joinToString("\n") { function -> generateHandlerFunction(function, klass) }}
