@@ -1,0 +1,18 @@
+name: Run E2E tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  run-compiling-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./gradlew :kotlin-rpc:publishToMavenLocal
+      # TODO: fix build logic so that API is built automatically
+      - run: ./gradlew :e2e-tests:compiling:api:build
+      - run: ./gradlew :e2e-tests:compiling:build
+      # TODO: actually run the built application and test that it works
