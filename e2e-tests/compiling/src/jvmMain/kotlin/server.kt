@@ -29,7 +29,7 @@ fun main() {
         }
 
         override suspend fun otherFunction(): String {
-            TODO("Not yet implemented")
+            return "String returned from server"
         }
     }
 

@@ -20,4 +20,12 @@ class EndToEndCompilingTest : CoroutineScope by GlobalScope {
             assertEquals(listOf(11.22f, 33.44f), fetchedData)
         }
     }
+
+    @Test
+    fun functionAcceptingNoArguments() = promise {
+        with(ZooApiJsClient(url = "http://localhost:8080", coroutineContext)) {
+            val fetchedData = otherFunction()
+            assertEquals("String returned from server", fetchedData)
+        }
+    }
 }
