@@ -31,6 +31,16 @@ fun main() {
         override suspend fun otherFunction(): String {
             return "String returned from server"
         }
+
+        private var storedValue: String = "No value stored"
+
+        override suspend fun setValue(value: String) {
+            storedValue = value
+        }
+
+        override suspend fun getValue(): String {
+            return storedValue
+        }
     }
 
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {

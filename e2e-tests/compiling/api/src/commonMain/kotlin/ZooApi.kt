@@ -16,4 +16,8 @@ interface ZooApi {
     ): List<Float>
 
     suspend fun otherFunction(): String
+
+    suspend fun setValue(value: String)
+
+    suspend fun getValue(): String
 }
