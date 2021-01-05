@@ -1,7 +1,7 @@
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
+import io.ktor.application.*
+import io.ktor.features.*
 import io.ktor.html.respondHtml
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
 import io.ktor.routing.get
@@ -34,6 +34,19 @@ fun main() {
     }
 
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {
+        // Allow cross-origin requests solely for test purposes.
+        install(CORS) {
+            anyHost()
+            method(HttpMethod.Options)
+            method(HttpMethod.Get)
+            method(HttpMethod.Post)
+            method(HttpMethod.Put)
+            method(HttpMethod.Delete)
+            method(HttpMethod.Patch)
+            header(HttpHeaders.AccessControlAllowHeaders)
+            header(HttpHeaders.ContentType)
+            header(HttpHeaders.AccessControlAllowOrigin)
+        }
         routing {
             get("/") { webApp() }
             zooApiKtorHandlers(zooImpl)

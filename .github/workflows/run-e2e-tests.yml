@@ -14,5 +14,9 @@ jobs:
       - run: ./gradlew :kotlin-rpc:publishToMavenLocal
       # TODO: fix build logic so that API is built automatically
       - run: ./gradlew :e2e-tests:compiling:api:build
-      - run: ./gradlew :e2e-tests:compiling:build
-      # TODO: actually run the built application and test that it works
+      # Run the server in the background.
+      - run: ./gradlew :e2e-tests:compiling:run &
+      # TODO: wait by checking if the server started. Now it's a waste of time
+      # or it may not start yet.
+      - run: sleep 30
+      - run: ./gradlew :e2e-tests:compiling:jsTest
