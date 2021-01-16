@@ -2,7 +2,7 @@
 
 **Work in progress!**
 
-It's a Kotlin-centric approach to Remote Procedure Calling, built on top of reflectionless kotlinx.serialization and ktor.
+It's a Kotlin-centric approach to Remote Procedure Calling, built on top of reflectionless [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization), [coroutines](https://github.com/Kotlin/kotlinx.coroutines) and [ktor](https://github.com/ktorio/ktor).
 Safe and elegant.
 
 It works like this. First, the API is described with pure Kotlin, as an interface. Then, kotlin-rpc's build-time logic
