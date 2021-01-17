@@ -32,6 +32,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -45,7 +46,12 @@ import kotlinx.serialization.json.Json
             }
         }
         
-        ${klass.declaredMemberFunctions.joinToString("\n") { function -> generateRequestDataClass(function) }}
+        ${klass.declaredMemberFunctions.joinToString("\n") { function ->
+            """
+            ${generateRequestDataClass(function)}
+            ${generateResponseDataClass(function)}
+            """
+        }}
     """
 }
 
@@ -63,7 +69,8 @@ private fun generateHandlerFunction(function: KFunction<*>, klass: KClass<*>): S
                 val implResponse = ${klass.simpleName?.decapitalize()}Impl.${function.name}(
                     ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name} = body.${parameter.name}," }}
                 )
-                val kotlinRpcResponse = KotlinRpcResponse(body = Json.encodeToString(implResponse))
+                val implResponseWrapped = ${function.name.capitalize()}Response(returnValue = implResponse)
+                val kotlinRpcResponse = KotlinRpcResponse(body = Json.encodeToString(${function.name.capitalize()}Response.serializer(), implResponseWrapped))
 
                 call.respond(HttpStatusCode.OK, Json.encodeToString(kotlinRpcResponse))
             } catch (e: Exception) {
@@ -81,6 +88,19 @@ private fun generateRequestDataClass(function: KFunction<*>): String {
         @Serializable
         data class ${function.name.capitalize()}Request(
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "val ${parameter.name}: ${parameter.type}," }}
+        )
+    """
+}
+
+private fun generateResponseDataClass(function: KFunction<*>): String {
+    if (function.returnType == Unit::class) {
+        return ""
+    }
+
+    return """
+        @Serializable
+        data class ${function.name.capitalize()}Response(
+            val returnValue: ${function.returnType},
         )
     """
 }

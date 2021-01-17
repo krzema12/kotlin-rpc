@@ -49,6 +49,8 @@ private fun generateProxyFunction(function: KFunction<*>): String {
     return """
         ${if (function.parameters.drop(1).isNotEmpty()) generateRequestDataClass(function) else ""}
         
+        ${generateResponseDataClass(function)}
+        
         override ${if (function.isSuspend) "suspend" else ""} fun ${function.name}(
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name}: ${parameter.type}," }}
         ): ${function.returnType} {
@@ -62,9 +64,15 @@ private fun generateProxyFunction(function: KFunction<*>): String {
                 throw RuntimeException(exceptionMessage)
             }
             
-            val responseBody = Json.decodeFromString<${function.returnType}>(response.body ?: throw RuntimeException("Shouldn't happen - exception or body should be present!"))
-            return responseBody
-        }"""
+            ${if (function.returnType != Unit::class) {
+              """
+                val responseBody = Json.decodeFromString<${function.name.capitalize()}Response>(response.body ?: throw RuntimeException("Shouldn't happen - exception or body should be present!"))
+                return responseBody.returnValue
+              """
+            } else {
+                ""
+            }
+        }}"""
 }
 
 private fun generateRequestBody(function: KFunction<*>): String {
@@ -86,6 +94,19 @@ private fun generateRequestDataClass(function: KFunction<*>): String {
         @Serializable
         data class ${function.name.capitalize()}Request(
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "val ${parameter.name}: ${parameter.type}," }}
+        )
+    """
+}
+
+private fun generateResponseDataClass(function: KFunction<*>): String {
+    if (function.returnType == Unit::class) {
+        return ""
+    }
+
+    return """
+        @Serializable
+        data class ${function.name.capitalize()}Response(
+            val returnValue: ${function.returnType},
         )
     """
 }
