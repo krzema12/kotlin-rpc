@@ -21,7 +21,7 @@ jobs:
       - run: sleep 30
       - run: ./gradlew :e2e-tests:compiling:jsTest
 
-  run-non-compiling-tests:
+  run-non-compiling-non-serializable-parameter-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,3 +32,15 @@ jobs:
       - run: ./gradlew :e2e-tests:non-compiling:not-serializable-parameter:api:build > stdout.txt 2> stderr.txt || true
       - run: less stdout.txt | grep "FAILED"
       - run: less stderr.txt | grep "Serializer has not been found for type 'TestDataClass'"
+
+  run-non-compiling-non-serializable-return-type-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./gradlew :kotlin-rpc:publishToMavenLocal
+      - run: ./gradlew :e2e-tests:non-compiling:not-serializable-return-type:api:build
+      # TODO: It now fails during second build. Probably something's messed up in Gradle config.
+      # This test verifies it holds true.
+      - run: ./gradlew :e2e-tests:non-compiling:not-serializable-return-type:api:build > stdout.txt 2> stderr.txt || true
+      - run: less stdout.txt | grep "FAILED"
+      - run: less stderr.txt | grep "Serializer has not been found for type 'SomeNonSerializableType'"
