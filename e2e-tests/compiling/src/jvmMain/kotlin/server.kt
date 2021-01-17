@@ -41,6 +41,10 @@ fun main() {
         override suspend fun getValue(): String {
             return storedValue
         }
+
+        override suspend fun functionThrowingException(value: String) {
+            throw RuntimeException("Exception message, value: $value")
+        }
     }
 
     embeddedServer(Netty, port = 8080, host = "127.0.0.1") {

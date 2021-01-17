@@ -20,4 +20,6 @@ interface ZooApi {
     suspend fun setValue(value: String)
 
     suspend fun getValue(): String
+
+    suspend fun functionThrowingException(value: String)
 }

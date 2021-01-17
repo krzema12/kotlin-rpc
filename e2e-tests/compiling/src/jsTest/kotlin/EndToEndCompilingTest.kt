@@ -5,6 +5,7 @@ import kotlinx.coroutines.promise
 import kotlin.js.Date
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class EndToEndCompilingTest : CoroutineScope by GlobalScope {
     @Test
@@ -37,6 +38,18 @@ class EndToEndCompilingTest : CoroutineScope by GlobalScope {
             setValue(testValue)
             val fetchedData = getValue()
             assertEquals(testValue, fetchedData)
+        }
+    }
+
+    @Test
+    fun functionTrowingException() = promise {
+        with(ZooApiJsClient(url = "http://localhost:8080", coroutineContext)) {
+            val testValue = Date.now().toString()
+            assertFailsWith(RuntimeException::class) {
+                functionThrowingException(testValue)
+            }.let { e ->
+                assertEquals("Exception message, value: $testValue", e.message)
+            }
         }
     }
 }

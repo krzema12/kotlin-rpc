@@ -30,10 +30,13 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
 import io.ktor.routing.route
+import io.ktor.http.HttpStatusCode
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+       
+       ${generateResponseClass()}
       
        ${annotations.joinToString("\n")}
         fun Routing.${klass.simpleName?.decapitalize()}KtorHandlers(${klass.simpleName?.decapitalize()}Impl: ${klass.qualifiedName}) {
@@ -56,11 +59,17 @@ private fun generateHandlerFunction(function: KFunction<*>, klass: KClass<*>): S
         ""
     }
             
-            val implResponse = ${klass.simpleName?.decapitalize()}Impl.${function.name}(
-                ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name} = body.${parameter.name}," }}
-            )
+            try {
+                val implResponse = ${klass.simpleName?.decapitalize()}Impl.${function.name}(
+                    ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name} = body.${parameter.name}," }}
+                )
+                val kotlinRpcResponse = KotlinRpcResponse(body = Json.encodeToString(implResponse))
 
-            call.respond(Json.encodeToString(implResponse))
+                call.respond(HttpStatusCode.OK, Json.encodeToString(kotlinRpcResponse))
+            } catch (e: Exception) {
+                val kotlinRpcResponse = KotlinRpcResponse(exception = e.message)
+                call.respond(HttpStatusCode.InternalServerError, Json.encodeToString(kotlinRpcResponse))
+            }
         }"""
 }
 

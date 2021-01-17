@@ -33,6 +33,8 @@ import kotlinx.serialization.json.Json
 import org.w3c.fetch.RequestInit
 import kotlin.coroutines.CoroutineContext
 import kotlin.js.json
+
+       ${generateResponseClass()}
         
        ${annotations.joinToString("\n")}
         class ${klass.simpleName}JsClient(private val url: String, private val coroutineContext: CoroutineContext) : ${klass.qualifiedName} {
@@ -51,8 +53,16 @@ private fun generateProxyFunction(function: KFunction<*>): String {
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name}: ${parameter.type}," }}
         ): ${function.returnType} {
             ${generateRequestBody(function)}
-            val responseBodyAsString = post("${'$'}url/api/${function.name}", requestBodyAsString)
-            val responseBody = Json.decodeFromString<${function.returnType}>(responseBodyAsString)
+            val responseAsString = post("${'$'}url/api/${function.name}", requestBodyAsString)
+            val response = Json.decodeFromString<KotlinRpcResponse>(responseAsString)
+            
+            if (response.exception != null) {
+                // For now, only top-level message is serialized.
+                val exceptionMessage = response.exception
+                throw RuntimeException(exceptionMessage)
+            }
+            
+            val responseBody = Json.decodeFromString<${function.returnType}>(response.body ?: throw RuntimeException("Shouldn't happen - exception or body should be present!"))
             return responseBody
         }"""
 }
