@@ -1,7 +1,14 @@
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
+    id("kotlinRpc")
 }
+
+//buildscript {
+//    repositories {
+//        mavenLocal()
+//    }
+//}
 
 repositories {
     mavenCentral()
