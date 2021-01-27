@@ -56,6 +56,10 @@ import kotlinx.serialization.json.Json
 }
 
 private fun generateHandlerFunction(function: KFunction<*>, klass: KClass<*>): String {
+    if (!function.isSuspend) {
+        throw IllegalArgumentException("All functions in the interface should be marked with 'suspend'!")
+    }
+
     return """
         post("/${function.name}") {
             ${if (function.parameters.drop(1).isNotEmpty())

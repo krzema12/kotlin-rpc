@@ -44,3 +44,12 @@ jobs:
       - run: ./gradlew :e2e-tests:non-compiling:not-serializable-return-type:api:build > stdout.txt 2> stderr.txt || true
       - run: less stdout.txt | grep "FAILED"
       - run: less stderr.txt | grep "Serializer has not been found for type 'SomeNonSerializableType'"
+
+  run-non-compiling-non-suspending-function-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./gradlew :kotlin-rpc:publishToMavenLocal
+      - run: ./gradlew :e2e-tests:non-compiling:non-suspending-function:api:build > stdout.txt 2> stderr.txt || true
+      - run: less stdout.txt | grep "FAILED"
+      - run: less stderr.txt | grep "All functions in the interface should be marked with 'suspend'!"

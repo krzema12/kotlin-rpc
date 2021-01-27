@@ -46,12 +46,16 @@ import kotlin.js.json
 }
 
 private fun generateProxyFunction(function: KFunction<*>): String {
+    if (!function.isSuspend) {
+        throw IllegalArgumentException("All functions in the interface should be marked with 'suspend'!")
+    }
+
     return """
         ${if (function.parameters.drop(1).isNotEmpty()) generateRequestDataClass(function) else ""}
         
         ${generateResponseDataClass(function)}
         
-        override ${if (function.isSuspend) "suspend" else ""} fun ${function.name}(
+        override suspend fun ${function.name}(
             ${function.parameters.drop(1).joinToString("\n") { parameter -> "${parameter.name}: ${parameter.type}," }}
         ): ${function.returnType} {
             ${generateRequestBody(function)}
