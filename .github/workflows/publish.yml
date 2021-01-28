@@ -1,0 +1,17 @@
+name: Publish to Bintray
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+  BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+  BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./gradlew --no-daemon :kotlin-rpc:build :kotlin-rpc:publishAllPublicationsToBintrayRepository
