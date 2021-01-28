@@ -35,7 +35,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:0.1.1")
+                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:0.1.2")
             }
             kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }
