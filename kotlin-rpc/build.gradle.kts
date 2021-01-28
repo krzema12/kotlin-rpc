@@ -25,6 +25,16 @@ tasks {
 }
 
 publishing {
+    repositories {
+        maven {
+            name = "bintray"
+            url = uri("https://api.bintray.com/maven/krzema1212/it.krzeminski/kotlin-rpc/;publish=1;override=1")
+            credentials {
+                username = System.getenv("BINTRAY_USER")
+                password = System.getenv("BINTRAY_API_KEY")
+            }
+        }
+    }
     publications {
         create<MavenPublication>("default") {
             from(components["java"])
