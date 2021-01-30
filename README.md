@@ -30,7 +30,7 @@ add kotlin-rpc to dependencies, together with adding custom source sets in `buil
 val jvmMain by getting {
     dependencies {
         ...
-        implementation("it.krzeminski.kotlinrpc:kotlin-rpc:0.1.2")
+        implementation("it.krzeminski.kotlinrpc:kotlin-rpc:[put-newest-version-here]")
     }
     kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
 }

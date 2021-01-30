@@ -8,6 +8,8 @@ repositories {
     mavenLocal()
 }
 
+val kotlinRpcVersion: String by rootProject.extra
+
 kotlin {
     jvm {
         compilations.all {
@@ -35,7 +37,7 @@ kotlin {
         val jvmMain by getting {
             dependencies {
                 implementation("io.ktor:ktor-server-netty:1.4.0")
-                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:0.1.2")
+                implementation("it.krzeminski.kotlinrpc:kotlin-rpc:$kotlinRpcVersion")
             }
             kotlin.srcDirs(kotlin.srcDirs, "$buildDir/jvm/generated/")
         }

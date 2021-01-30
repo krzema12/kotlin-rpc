@@ -3,8 +3,10 @@ plugins {
     `maven-publish`
 }
 
+val kotlinRpcVersion: String by rootProject.extra
+
 group = "it.krzeminski.kotlinrpc"
-version = "0.1.2"
+version = kotlinRpcVersion
 
 repositories {
     mavenCentral()
