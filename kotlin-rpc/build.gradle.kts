@@ -8,11 +8,13 @@ version = "0.1.2"
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.10")
+    implementation("com.pinterest:ktlint:0.40.0")
 }
 
 tasks {

@@ -4,10 +4,11 @@ import java.io.File
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.declaredMemberFunctions
+import com.pinterest.ktlint.main as ktlint
 
 fun main(args: Array<String>) {
     val className = args[0]
-    val targetPath = args[1]
+    val targetDirectory = args[1]
     val annotations = if (args.size >= 3 ) {
         args[2].split(",")
     } else {
@@ -15,12 +16,14 @@ fun main(args: Array<String>) {
     }
 
     println("Class name: $className")
-    println("Target path: $targetPath")
+    println("Target directory: $targetDirectory")
 
     val classToGenerateClientFor = Class.forName(className).kotlin
     val generatedCode = generateClass(classToGenerateClientFor, annotations)
-    File(targetPath).mkdirs()
-    File("$targetPath/${classToGenerateClientFor.simpleName}JsClient.kt").writeText(generatedCode)
+    File(targetDirectory).mkdirs()
+    val targetPath = "$targetDirectory/${classToGenerateClientFor.simpleName}JsClient.kt"
+    File(targetPath).writeText(generatedCode)
+    ktlint(arrayOf("-F", targetPath))
 }
 
 private fun generateClass(klass: KClass<*>, annotations: List<String>): String {
