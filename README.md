@@ -1,5 +1,7 @@
 # kotlin-rpc
 
+[![Download](https://api.bintray.com/packages/krzema1212/it.krzeminski/kotlin-rpc/images/download.svg)](https://bintray.com/krzema1212/it.krzeminski/kotlin-rpc/_latestVersion) ![Build](https://github.com/krzema12/kotlin-rpc/workflows/Build/badge.svg)
+
 **Work in progress!**
 
 It's a Kotlin-centric approach to Remote Procedure Calling, built on top of reflectionless [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization), [coroutines](https://github.com/Kotlin/kotlinx.coroutines) and [ktor](https://github.com/ktorio/ktor).
