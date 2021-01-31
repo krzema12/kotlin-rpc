@@ -6,16 +6,6 @@ plugins {
 group = "it.krzeminski"
 version = "0.1.0"
 
-gradlePlugin {
-    plugins {
-        register("kotlin-rpc-gradle-plugin") {
-            id = "kotlinRpc"
-            version = "0.1.0"
-            implementationClass = "KotlinRpcGradlePlugin"
-        }
-    }
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
