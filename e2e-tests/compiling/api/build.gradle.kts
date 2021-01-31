@@ -1,14 +1,17 @@
 plugins {
     kotlin("multiplatform")
     kotlin("plugin.serialization")
-    id("kotlinRpc")
 }
 
-//buildscript {
-//    repositories {
-//        mavenLocal()
-//    }
-//}
+
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath("kotlinRpc:kotlinRpc.gradle.plugin:0.1.0")
+    }
+}
 
 repositories {
     mavenCentral()
@@ -55,21 +58,4 @@ kotlin {
     }
 }
 
-val generateJsProxy = tasks.register<JavaExec>("generateJsClient") {
-    group = "build"
-    description = "Generate JS proxy"
-    classpath = sourceSets["main"].runtimeClasspath
-    main = "it.krzeminski.kotlinrpc.api.generation.JsClientGenerationKt"
-    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/js/generated")
-}
-
-val generateJvmKtorServer = tasks.register<JavaExec>("generateJvmKtorServer") {
-    group = "build"
-    description = "Generate JVM Ktor server"
-    classpath = sourceSets["main"].runtimeClasspath
-    main = "it.krzeminski.kotlinrpc.api.generation.JvmKtorServerGenerationKt"
-    args("it.krzeminski.zoo.api.ZooApi", "$buildDir/jvm/generated")
-}
-
-tasks.getByName("jvmJar").dependsOn(generateJvmKtorServer)
-tasks.getByName("jsJar").dependsOn(generateJsProxy)
+apply<it.krzeminski.kotlinrpc.KotlinRpcGradlePlugin>()
